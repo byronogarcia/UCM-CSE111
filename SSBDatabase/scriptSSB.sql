@@ -144,7 +144,7 @@ INSERT INTO 'Pokeball' ('pokeID', 'pokePKMN', 'pokePkmnType1', 'pokePkmnType2', 
 -- 	'musGameSeries' varchar(20) NOT NULL,
 -- 	'musStage' varchar(20) NOT NULL,
 -- 	'gsID' int(10) NOT NULL,
--- INSERT INTO 'Music' ('musName', 'musGameSeries', 'musStage', 'gsID') VALUES
--- ()
+-- INSERT INTO 'Music' ('musID', 'musName', 'musGameSeries', 'musStage', 'gsID') VALUES
+-- (1, 'Peach\'s Castle', 'Super Mario', '' )
 
 
