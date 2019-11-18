@@ -1,3 +1,12 @@
+SELECT charName
+from character, Game Series
+
+
+INSERT INTO Game Series
+SELECT *
+FROM character;
+ 
+
 CREATE TABLE IF NOT EXISTS 'Game Series' (
 	'gsID' int(10) NOT NULL,
 	'gsName' varchar(20) NOT NULL,
@@ -20,9 +29,9 @@ CREATE TABLE IF NOT EXISTS 'Stages' (
 	'stageID' int(10) NOT NULL,
 	'stageName' varchar(25) NOT NULL,
 	'stageGameSeries' varchar(20) NOT NULL,
-	'stageHazard' boolean NOT NULL, 
-	'stageViable' boolean NOT NULL,
-	'stageMove' boolean NOT NULL,
+	'stageHazard' char(10) NOT NULL, 
+	'stageViable' char(10) NOT NULL,
+	'stageMove' char(10) NOT NULL,
 	'gsID' int(10) NOT NULL,
 	PRIMARY KEY ('stageID')
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
@@ -32,7 +41,7 @@ CREATE TABLE IF NOT EXISTS 'Items' (
 	'itemID' int(10) NOT NULL,
 	'itemName' varchar(20) NOT NULL,
 	'itemGameSeries' varchar(20) NOT NULL,
-	'itemType' varchar(20) NOT NULL,
+	'itemType' char(10) NOT NULL,
 	'gsID' int(10) NOT NULL,
 	PRIMARY KEY ('itemID')
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
@@ -41,9 +50,10 @@ CREATE TABLE IF NOT EXISTS 'Items' (
 CREATE TABLE IF NOT EXISTS 'Pokeball' (
 	'pokeID' int(10) NOT NULL,
 	'pokePkmn' varchar(20) NOT NULL,
-	'pokePkmnType1' varchar(15) NOT NULL,
-	'pokePkmnType2' varchar(15) NOT NULL,
-	'pokeGen' varchar(20) NOT NULL
+	'pokePkmnType1' char(10) NOT NULL,
+	'pokePkmnType2' char(10),
+	'pokeGen' int(5) NOT NULL,
+	'pokeGenName' varchar(20) NOT NULL,
 	'itemID' int(10) NOT NULL,
 	PRIMARY KEY ('pokeID')
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('itemID') REFERENCES 'Items'('ID')
@@ -69,7 +79,8 @@ INSERT INTO 'Game Series' ('gsID', 'gsName', 'gsDateOrigin') VALUES
 (7, 'Star Fox', 1993-02-21),
 (8, 'Pokemon', 1996-02-27),
 (9, 'Earthbound', 1989-07-27),
-(10, 'F-Zero', 1990-11-21);
+(10, 'F-Zero', 1990-11-21),
+(11, 'Super Smash Bros.', 1999-01-21);
 
 INSERT INTO 'character' ('charID', 'charName', 'charColor', 'charGameSeries', 'gsID') VALUES
 (1, 'Mario', 'RED', 'Super Mario', 1),
@@ -85,5 +96,55 @@ INSERT INTO 'character' ('charID', 'charName', 'charColor', 'charGameSeries', 'g
 (11, 'Captain Falcon', 'BLUE', 'F-Zero', 10),
 (12, 'Jigglypuff', 'PINK', 'Pokemon', 8);
 
-INSERT INTO 
+INSERT INTO 'Stages' ('stageID', 'stageName', 'stageGameSeries', 'stageHazard', 'stageViable', 'stageMove', 'gsID') VALUES
+(1, 'Peach\'s Castle', 'Super Mario', 'BUMPER', 'UNVIABLE', 'NO', 1),
+(2, 'Congo Jungle', 'Donkey Kong', 'CANNON', 'UNVIABLE', 'YES', 2),
+(3, 'Hyrule Castle', 'The Legend of Zelda', 'TORNADO', 'UNVIABLE', 3),
+-- Check Planet Zebes, might not be FLOOR, might not be YES
+(4, 'Planet Zebes', 'Metroid', 'FLOOR', 'UNVIABLE', 'YES', 4),
+(5, 'Mushroom Kingdom', 'Super Mario', 'PLATFORMS', 'UNVIABLE', 'NO', 1),
+(6, 'Yoshi\'s Island', 'Yoshi', 'CLOUDS', 'UNVIABLE', 'NO', 5),
+(7, 'Dream Land', 'Kirby', 'NONE', 'VIABLE', 'NO', 6),
+--check Sector Z
+(8, 'Sector Z', 'Star Fox', 'BLASTERS', 'UNVIABLE', 'NO', 7),
+(9, 'Saffron City', 'Pokemon', 'POKEMON', 'UNVIABLE', 'YES', 8);
+
+INSERT INTO 'Items' ('itemID', 'itemName', 'itemGameSeries', 'gsID') VALUES
+--INSERT INTO 'Items' ('itemID', 'itemName', 'itemGameSeries', 'itemType', 'gsID') VALUES
+(1, 'Beam Sword', 'Super Smash Bros.', 11),
+(2, 'Bob-omb', 'Super Mario', 1),
+(3, 'Bumper', 'Super Smash Bros.', 11),
+(4, 'Fan', 'Super Smash Bros.', 11),
+(5, 'Fire Flower', 'Super Mario', 1),
+(6, 'Green Shell', 'Super Mario', 1),
+(7, 'Home-Run Bat', 'Earthbound', 9),
+(8, 'Maxim Tomato', 'Kirby', 6),
+(9, 'Motion-Sensor Bomb', 'Super Smash Bros.', 11),
+(10, 'Poke Ball', 'Pokemon', 8),
+(11, 'Ray Gun', 'Super Smash Bros.', 11),
+(12, 'Starman', 'Super Mario', 1);
+
+INSERT INTO 'Pokeball' ('pokeID', 'pokePKMN', 'pokePkmnType1', 'pokePkmnType2', 'pokeGen', 'pokeGenName', 'itemID') VALUES
+(6, 'Charizard', 'FIRE', 'FLYING', 1, 'Kanto', 10),
+(9, 'Blaistoise', 'WATER', NULL, 1, 'Kanto', 10),
+(15, 'Beedrill', 'BUG', 'FLYING', 1, 'Kanto', 10),
+(35, 'Clefairy',)
+(52, 'Meowth', 'NORMAL', NULL, 1, 'Kanto', 10),
+(95, 'Onix', 'ROCK', NULL, 1, 'Kanto', 10),
+(106, 'Hitmonlee', 'FIGHTING', NULL, 1, 'Kanto', 10),
+(109, 'Koffing', 'POISING', NULL, 1, 'Kanto', 10),
+(113, 'Chansey', 'NORMAL', NULL, 1, 'Kanto', 10),
+(118, 'Goldeen', 'WATER', NULL, 1, 'Kanto', 10),
+(121, 'Starmie', 'WATER', NULL, 1, 'Kanto', 10),
+(143, 'Snorlax', 'NORMAL', NULL, 1, 'Kanto', 10),
+(151, 'Mew', 'PSYCHIC', NULL, 1, 'Kanto', 10);
+
+-- 'musID' int (10) NOT NULL,
+-- 	'musName' varchar(25) NOT NULL,
+-- 	'musGameSeries' varchar(20) NOT NULL,
+-- 	'musStage' varchar(20) NOT NULL,
+-- 	'gsID' int(10) NOT NULL,
+-- INSERT INTO 'Music' ('musName', 'musGameSeries', 'musStage', 'gsID') VALUES
+-- ()
+
 
