@@ -1,19 +1,12 @@
-SELECT charName
-from character, Game Series
-
-
-INSERT INTO Game Series
-SELECT *
-FROM character;
- 
-
+-- Entering GameSeries Table
 CREATE TABLE IF NOT EXISTS 'GameSeries' (
 	'gsID' int(10) NOT NULL,
 	'gsName' varchar(20) NOT NULL,
-	'gsDateOrigin' date NOT NULL
+	'gsDateOrigin' date NOT NULL,
 	PRIMARY KEY ('gsID')
 );
 
+-- Entering Character Table
 CREATE TABLE IF NOT EXISTS 'Character' (
 	'charID' int(10) NOT NULL,
 	'charName' varchar(20) NOT NULL,
@@ -25,6 +18,7 @@ CREATE TABLE IF NOT EXISTS 'Character' (
 	--CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
 );
 
+-- Entering ColorScheme Table
 CREATE TABLE IF NOT EXISTS 'ColorScheme' (
 	'colorID' int(10) NOT NULL,
 	'color1' varchar(10) NOT NULL,
@@ -37,6 +31,7 @@ CREATE TABLE IF NOT EXISTS 'ColorScheme' (
 	PRIMARY KEY ('colorID')
 );
 
+-- Entering Move Table
 CREATE TABLE IF NOT EXISTS 'Moves' (
 	'moveID' int(10) NOT NULL,
 	'moveB' varchar(20) NOT NULL,
@@ -46,6 +41,7 @@ CREATE TABLE IF NOT EXISTS 'Moves' (
 	PRIMARY KEY ('moveID')
 );
 
+-- Entering Stages Table
 CREATE TABLE IF NOT EXISTS 'Stages' (
 	'stageID' int(10) NOT NULL,
 	'stageName' varchar(25) NOT NULL,
@@ -58,6 +54,7 @@ CREATE TABLE IF NOT EXISTS 'Stages' (
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
 );
 
+-- Entering Items Table
 CREATE TABLE IF NOT EXISTS 'Items' (
 	'itemID' int(10) NOT NULL,
 	'itemName' varchar(20) NOT NULL,
@@ -68,6 +65,7 @@ CREATE TABLE IF NOT EXISTS 'Items' (
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
 );
 
+-- Entering Pokeball Table
 CREATE TABLE IF NOT EXISTS 'Pokeball' (
 	'pokeID' int(10) NOT NULL,
 	'pokePkmn' varchar(20) NOT NULL,
@@ -80,16 +78,7 @@ CREATE TABLE IF NOT EXISTS 'Pokeball' (
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('itemID') REFERENCES 'Items'('ID')
 );
 
--- CREATE TABLE IF NOT EXISTS 'Music' (
--- 	'musID' int (10) NOT NULL,
--- 	'musName' varchar(25) NOT NULL,
--- 	'musGameSeries' varchar(20) NOT NULL,
--- 	'musStage' varchar(20) NOT NULL,
--- 	'gsID' int(10) NOT NULL,
--- 	PRIMARY KEY ('musID')
--- 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
--- )
-
+-- Inserting all data into GameSeries
 INSERT INTO 'GameSeries' ('gsID', 'gsName', 'gsDateOrigin') VALUES
 (1, 'Super Mario', '1981-07-09'),
 (2, 'Donkey Kong', '1981-07-09'),
@@ -103,6 +92,7 @@ INSERT INTO 'GameSeries' ('gsID', 'gsName', 'gsDateOrigin') VALUES
 (10, 'F-Zero', '1990-11-21'),
 (11, 'Super Smash Bros.', '1999-01-21');
 
+-- Inserting all data into Character
 INSERT INTO 'Character' ('charID', 'charName', 'charColor', 'charGameSeries', 'gsID') VALUES
 (1, 'Mario', 'RED', 'Super Mario', 1),
 (2, 'Donkey Kong', 'BROWN', 'Donkey Kong', 2),
@@ -117,6 +107,7 @@ INSERT INTO 'Character' ('charID', 'charName', 'charColor', 'charGameSeries', 'g
 (11, 'Captain Falcon', 'BLUE', 'F-Zero', 10),
 (12, 'Jigglypuff', 'PINK', 'Pokemon', 8);
 
+-- Inserting all data into ColorScheme
 INSERT INTO 'ColorScheme' ('colorID', 'color1', 'color2', 'color3', 'color4', 'color5', 'color6', 'charID') VALUES
 (1, 'PURPLE', 'GREY', 'RED', 'WHITE', 'GREEN', 'BLUE', 11),
 (2, 'BROWN', 'BLACK', 'RED', 'BLUE', 'BLUE', 'GREEN', 2),
@@ -131,21 +122,37 @@ INSERT INTO 'ColorScheme' ('colorID', 'color1', 'color2', 'color3', 'color4', 'c
 (11, 'RED', 'PINK', 'BLACK', 'GREEN', 'BLUE', NULL, 4),
 (12, 'GREEN', 'RED', 'CYAN', 'YELLOW', 'PINK', 'BLUE', 5);
 
+-- Inserting all data into Moves
+INSERT INTO 'Moves' ('moveID', 'moveB', 'moveUp-B', 'moveDown-B', 'charID') VALUES
+(1, 'Fireball', 'Super Jump Punch', 'Mario Tornado', 1),
+(2, 'Giant Punch', 'Spinning Kong', 'Hand Slap', 2),
+(3, 'Boomerang', 'Spinning Slash', 'Bomb', 3),
+(4, 'Charge Shot', 'Screw Attack', 'Bomb', 4),
+(5, 'Lay Egg', 'Throw Egg', 'Hip Drop', 5),
+(6, 'Inhale', 'Final Cutter', 'Stone', 6),
+(7, 'Blastor Shot', 'Fire Fox', 'Reflector', 7),
+(8, 'Thunder Jolt', 'Quick Attack', 'Thunder', 8),
+(9, 'Fieball', 'Super Jump Punch', 'Luigi Tornado', 9),
+(10, 'PK Fire', 'PK Thunder', 'PSI Magnet', 10),
+(11, 'Falcon Punch', 'Falcon Dive', 'Falcon Kick', 11),
+(12, 'Pound', 'Sing', 'Rest', 12);
+
+-- Inserting all data into Stages
 INSERT INTO 'Stages' ('stageID', 'stageName', 'stageGameSeries', 'stageHazard', 'stageViable', 'stageMove', 'gsID') VALUES
-(1, 'Peach\'s Castle', 'Super Mario', 'BUMPER', 'UNVIABLE', 'NO', 1),
+(1, 'Peach''s Castle', 'Super Mario', 'BUMPER', 'UNVIABLE', 'NO', 1),
 (2, 'Congo Jungle', 'Donkey Kong', 'CANNON', 'UNVIABLE', 'YES', 2),
 (3, 'Hyrule Castle', 'The Legend of Zelda', 'TORNADO', 'UNVIABLE', 3),
 -- Check Planet Zebes, might not be FLOOR, might not be YES
 (4, 'Planet Zebes', 'Metroid', 'FLOOR', 'UNVIABLE', 'YES', 4),
 (5, 'Mushroom Kingdom', 'Super Mario', 'PLATFORMS', 'UNVIABLE', 'NO', 1),
-(6, 'Yoshi\'s Island', 'Yoshi', 'CLOUDS', 'UNVIABLE', 'NO', 5),
+(6, 'Yoshi''s Island', 'Yoshi', 'CLOUDS', 'UNVIABLE', 'NO', 5),
 (7, 'Dream Land', 'Kirby', 'NONE', 'VIABLE', 'NO', 6),
 --check Sector Z
 (8, 'Sector Z', 'Star Fox', 'BLASTERS', 'UNVIABLE', 'NO', 7),
 (9, 'Saffron City', 'Pokemon', 'POKEMON', 'UNVIABLE', 'YES', 8);
 
+-- Inserting all data into Items
 INSERT INTO 'Items' ('itemID', 'itemName', 'itemGameSeries', 'gsID') VALUES
---INSERT INTO 'Items' ('itemID', 'itemName', 'itemGameSeries', 'itemType', 'gsID') VALUES
 (1, 'Beam Sword', 'Super Smash Bros.', 11),
 (2, 'Bob-omb', 'Super Mario', 1),
 (3, 'Bumper', 'Super Smash Bros.', 11),
@@ -159,11 +166,12 @@ INSERT INTO 'Items' ('itemID', 'itemName', 'itemGameSeries', 'gsID') VALUES
 (11, 'Ray Gun', 'Super Smash Bros.', 11),
 (12, 'Starman', 'Super Mario', 1);
 
+-- Inserting all data into Pokeball
 INSERT INTO 'Pokeball' ('pokeID', 'pokePKMN', 'pokePkmnType1', 'pokePkmnType2', 'pokeGen', 'pokeGenName', 'itemID') VALUES
 (6, 'Charizard', 'FIRE', 'FLYING', 1, 'Kanto', 10),
 (9, 'Blaistoise', 'WATER', NULL, 1, 'Kanto', 10),
 (15, 'Beedrill', 'BUG', 'FLYING', 1, 'Kanto', 10),
-(35, 'Clefairy',)
+(35, 'Clefairy', 'FAIRY', NULL, 1, 'Kanto', 10),
 (52, 'Meowth', 'NORMAL', NULL, 1, 'Kanto', 10),
 (95, 'Onix', 'ROCK', NULL, 1, 'Kanto', 10),
 (106, 'Hitmonlee', 'FIGHTING', NULL, 1, 'Kanto', 10),
@@ -173,18 +181,4 @@ INSERT INTO 'Pokeball' ('pokeID', 'pokePKMN', 'pokePkmnType1', 'pokePkmnType2', 
 (121, 'Starmie', 'WATER', NULL, 1, 'Kanto', 10),
 (143, 'Snorlax', 'NORMAL', NULL, 1, 'Kanto', 10),
 (151, 'Mew', 'PSYCHIC', NULL, 1, 'Kanto', 10);
-
-
-
-
-
-
--- 'musID' int (10) NOT NULL,
--- 	'musName' varchar(25) NOT NULL,
--- 	'musGameSeries' varchar(20) NOT NULL,
--- 	'musStage' varchar(20) NOT NULL,
--- 	'gsID' int(10) NOT NULL,
--- INSERT INTO 'Music' ('musID', 'musName', 'musGameSeries', 'musStage', 'gsID') VALUES
--- (1, 'Peach\'s Castle', 'Super Mario', '' )
-
 
