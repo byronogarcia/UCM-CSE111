@@ -26,7 +26,15 @@ CREATE TABLE IF NOT EXISTS 'Character' (
 );
 
 CREATE TABLE IF NOT EXISTS 'ColorScheme' (
-	'schemeID'
+	'colorID' int(10) NOT NULL,
+	'color1' varchar(10) NOT NULL,
+	'color2' varchar(10) NOT NULL,
+	'color3' varchar(10) NOT NULL,
+	'color4' varchar(10) NOT NULL,
+	'color5' varchar(10),
+	'color6' varchar(10),
+	'charID' int(10) NOT NULL REFERENCES [Character](charID),
+	PRIMARY KEY ('colorID')
 );
 
 CREATE TABLE IF NOT EXISTS 'Moves' (
