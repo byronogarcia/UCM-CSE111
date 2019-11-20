@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS 'Character' (
 	'charColor' varchar(10) NOT NULL,
 	'charGameSeries' varchar(20) NOT NULL,
 	--'charDateOrigin' date NOT NULL,
-	'gsID' int(10) NOT NULL REFERENCES [GameSeries](gsID),
+	'gsID' int(10) NOT NULL REFERENCES [GameSeries](gsID) ON DELETE CASCADE,
 	PRIMARY KEY ('charID')
 	--CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
 );
@@ -237,7 +237,7 @@ WHERE S.stageHazard='PLATFORMS';
 
 
 --9-- General Format to grab the map of a particular character
-
+-- Didn't work in SQLite
 SELECT stageName as OriginMap
 from Character as C, GameSeries  as G, Stages as S
 WHERE G.GameSeries= C.GameSeries AND S.stageGameSeries=C.GameSeries AND C.charName='FOX';
@@ -256,9 +256,25 @@ Where I.gsID = C.gsID
 ORDER BY C.gsID;
 
 --12-- Example of Update a certain Pokemon's name based on ID
-
+-- Didn't work in SQLite
 UPDATE POKEBALL
 SET pokePKMN='Pikachu'
 WHERE pokeID=9;
 
--- 13 - Deleting all characters from a certain GameSeries
+-- 13 - Deleting itemID 8 (Maxim Tomato) from the Item table
+DELETE 
+FROM Items
+WHERE itemID = 8;
+
+-- 14 - Inserting the deleted table back in (Maxim Tomato)
+INSERT INTO 'Items' ('itemID', 'itemName', 'itemGameSeries', 'gsID') VALUES
+(8, 'Maxim Tomato', 'Kirby', 6);
+
+-- 15 -  Listing all the characters moves who's first game was released prior to 1990
+SELECT DISTINCT charName, moveB, moveUpB, moveDownB
+FROM Character AS c, Moves AS m, GameSeries AS g
+WHERE gsDateOrigin < '1990-%-%'
+    AND c.charID = m.charID
+    AND c.gsID = g.gsID;
+
+--
