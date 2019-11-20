@@ -215,3 +215,48 @@ SELECT gsID
 FROM GameSeries
 WHERE IN (SELECT gsName FROM GameSeries WHERE gsDateOrigin < '1990-%-%')
 */
+
+--6-- Grab the IDs of all rock type pokemon from the region kanto in Ascending Order
+
+Select pokeID 
+FROM Pokeball as P
+WHERE P.pokePkmnType1='ROCK' AND pokeGenName='Kanto'
+ORDER BY pokeID ASC;
+
+--7-- General format to grab origin date of a given Character(swap out for Mario)
+
+SELECT gsDateOrigin 
+from GameSeries  as G, Character as C
+WHERE G.GameSeries= C.GameSeries AND C.charName='Mario';
+
+--8 -- Select all the maps available with a Platform stage hazard
+
+SELECT stageName, stageID
+FROM Stages as S
+WHERE S.stageHazard='PLATFORMS';
+
+
+--9-- General Format to grab the map of a particular character
+
+SELECT stageName as OriginMap
+from Character as C, GameSeries  as G, Stages as S
+WHERE G.GameSeries= C.GameSeries AND S.stageGameSeries=C.GameSeries AND C.charName='FOX';
+
+--10-- Select All stages that move by Stage Name
+
+Select stageName
+FROM STAGES as S
+WHERE stageMove=true;
+
+--11-- Select all the items Associated with a given Game Series 
+
+SELECT itemName
+FROM Items I, Character as C
+Where I.charGameSeries = C.charGameSeries 
+ORDER BY C.charGameSeries;
+
+--12-- Example of Update a certain Pokemon's name based on ID
+
+UPDATE POKEBALL
+SET pokePKMN='Pikachu'
+WHERE pokeID=9;
