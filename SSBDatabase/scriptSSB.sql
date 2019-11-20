@@ -7,7 +7,7 @@ SELECT *
 FROM character;
  
 
-CREATE TABLE IF NOT EXISTS 'Game Series' (
+CREATE TABLE IF NOT EXISTS 'GameSeries' (
 	'gsID' int(10) NOT NULL,
 	'gsName' varchar(20) NOT NULL,
 	'gsDateOrigin' date NOT NULL
@@ -20,9 +20,22 @@ CREATE TABLE IF NOT EXISTS 'Character' (
 	'charColor' varchar(10) NOT NULL,
 	'charGameSeries' varchar(20) NOT NULL,
 	--'charDateOrigin' date NOT NULL,
-	'gsID' int(10) NOT NULL
+	'gsID' int(10) NOT NULL REFERENCES [GameSeries](gsID),
 	PRIMARY KEY ('charID')
 	--CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
+);
+
+CREATE TABLE IF NOT EXISTS 'ColorScheme' (
+	'schemeID'
+);
+
+CREATE TABLE IF NOT EXISTS 'Moves' (
+	'moveID' int(10) NOT NULL,
+	'moveB' varchar(20) NOT NULL,
+	'moveUp-B' varchar(20) NOT NULL,
+	'moveDown-B' varchar(20) NOT NULL,
+	'charID' int(10) NOT NULL REFERENCES [Character] (charID),
+	PRIMARY KEY ('moveID')
 );
 
 CREATE TABLE IF NOT EXISTS 'Stages' (
@@ -32,7 +45,7 @@ CREATE TABLE IF NOT EXISTS 'Stages' (
 	'stageHazard' char(10) NOT NULL, 
 	'stageViable' char(10) NOT NULL,
 	'stageMove' char(10) NOT NULL,
-	'gsID' int(10) NOT NULL,
+	'gsID' int(10) NOT NULL REFERENCES [GameSeries](gsID),
 	PRIMARY KEY ('stageID')
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
 );
@@ -42,7 +55,7 @@ CREATE TABLE IF NOT EXISTS 'Items' (
 	'itemName' varchar(20) NOT NULL,
 	'itemGameSeries' varchar(20) NOT NULL,
 	'itemType' char(10) NOT NULL,
-	'gsID' int(10) NOT NULL,
+	'gsID' int(10) NOT NULL REFERENCES [GameSeries](gsID),
 	PRIMARY KEY ('itemID')
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
 );
@@ -54,20 +67,20 @@ CREATE TABLE IF NOT EXISTS 'Pokeball' (
 	'pokePkmnType2' char(10),
 	'pokeGen' int(5) NOT NULL,
 	'pokeGenName' varchar(20) NOT NULL,
-	'itemID' int(10) NOT NULL,
+	'itemID' int(10) NOT NULL REFERENCES [Items](itemID),
 	PRIMARY KEY ('pokeID')
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('itemID') REFERENCES 'Items'('ID')
 );
 
-CREATE TABLE IF NOT EXISTS 'Music' (
-	'musID' int (10) NOT NULL,
-	'musName' varchar(25) NOT NULL,
-	'musGameSeries' varchar(20) NOT NULL,
-	'musStage' varchar(20) NOT NULL,
-	'gsID' int(10) NOT NULL,
-	PRIMARY KEY ('musID')
-	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
-)
+-- CREATE TABLE IF NOT EXISTS 'Music' (
+-- 	'musID' int (10) NOT NULL,
+-- 	'musName' varchar(25) NOT NULL,
+-- 	'musGameSeries' varchar(20) NOT NULL,
+-- 	'musStage' varchar(20) NOT NULL,
+-- 	'gsID' int(10) NOT NULL,
+-- 	PRIMARY KEY ('musID')
+-- 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
+-- )
 
 INSERT INTO 'Game Series' ('gsID', 'gsName', 'gsDateOrigin') VALUES
 (1, 'Super Mario', 1981-07-09),
@@ -138,6 +151,11 @@ INSERT INTO 'Pokeball' ('pokeID', 'pokePKMN', 'pokePkmnType1', 'pokePkmnType2', 
 (121, 'Starmie', 'WATER', NULL, 1, 'Kanto', 10),
 (143, 'Snorlax', 'NORMAL', NULL, 1, 'Kanto', 10),
 (151, 'Mew', 'PSYCHIC', NULL, 1, 'Kanto', 10);
+
+
+
+
+
 
 -- 'musID' int (10) NOT NULL,
 -- 	'musName' varchar(25) NOT NULL,
