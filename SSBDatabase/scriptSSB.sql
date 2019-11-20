@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS 'ColorScheme' (
 CREATE TABLE IF NOT EXISTS 'Moves' (
 	'moveID' int(10) NOT NULL,
 	'moveB' varchar(20) NOT NULL,
-	'moveUp-B' varchar(20) NOT NULL,
-	'moveDown-B' varchar(20) NOT NULL,
+	'moveUpB' varchar(20) NOT NULL,
+	'moveDownB' varchar(20) NOT NULL,
 	'charID' int(10) NOT NULL REFERENCES [Character] (charID),
 	PRIMARY KEY ('moveID')
 );
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS 'Items' (
 	'itemID' int(10) NOT NULL,
 	'itemName' varchar(20) NOT NULL,
 	'itemGameSeries' varchar(20) NOT NULL,
-	'itemType' char(10) NOT NULL,
+	--'itemType' char(10) NOT NULL,
 	'gsID' int(10) NOT NULL REFERENCES [GameSeries](gsID),
 	PRIMARY KEY ('itemID')
 	-- CONSTRAINT 'FK2' FOREIGN KEY ('gsID') REFERENCES 'Game Series'('ID')
@@ -123,7 +123,7 @@ INSERT INTO 'ColorScheme' ('colorID', 'color1', 'color2', 'color3', 'color4', 'c
 (12, 'GREEN', 'RED', 'CYAN', 'YELLOW', 'PINK', 'BLUE', 5);
 
 -- Inserting all data into Moves
-INSERT INTO 'Moves' ('moveID', 'moveB', 'moveUp-B', 'moveDown-B', 'charID') VALUES
+INSERT INTO 'Moves' ('moveID', 'moveB', 'moveUpB', 'moveDownB', 'charID') VALUES
 (1, 'Fireball', 'Super Jump Punch', 'Mario Tornado', 1),
 (2, 'Giant Punch', 'Spinning Kong', 'Hand Slap', 2),
 (3, 'Boomerang', 'Spinning Slash', 'Bomb', 3),
@@ -141,7 +141,7 @@ INSERT INTO 'Moves' ('moveID', 'moveB', 'moveUp-B', 'moveDown-B', 'charID') VALU
 INSERT INTO 'Stages' ('stageID', 'stageName', 'stageGameSeries', 'stageHazard', 'stageViable', 'stageMove', 'gsID') VALUES
 (1, 'Peach''s Castle', 'Super Mario', 'BUMPER', 'UNVIABLE', 'NO', 1),
 (2, 'Congo Jungle', 'Donkey Kong', 'CANNON', 'UNVIABLE', 'YES', 2),
-(3, 'Hyrule Castle', 'The Legend of Zelda', 'TORNADO', 'UNVIABLE', 3),
+(3, 'Hyrule Castle', 'The Legend of Zelda', 'TORNADO', 'UNVIABLE', 'NO', 3),
 -- Check Planet Zebes, might not be FLOOR, might not be YES
 (4, 'Planet Zebes', 'Metroid', 'FLOOR', 'UNVIABLE', 'YES', 4),
 (5, 'Mushroom Kingdom', 'Super Mario', 'PLATFORMS', 'UNVIABLE', 'NO', 1),
@@ -182,3 +182,36 @@ INSERT INTO 'Pokeball' ('pokeID', 'pokePKMN', 'pokePkmnType1', 'pokePkmnType2', 
 (143, 'Snorlax', 'NORMAL', NULL, 1, 'Kanto', 10),
 (151, 'Mew', 'PSYCHIC', NULL, 1, 'Kanto', 10);
 
+-- 20 Queries
+-- 1 - Getting all characters moves who have their first color as red
+SELECT DISTINCT charName, moveB, moveUpB, moveDownB
+FROM Moves, Character, ColorScheme
+WHERE color1 = 'RED'
+    AND Character.charID = ColorScheme.charID
+    AND Character.charID = Moves.charID;
+    
+-- 2 - Getting all the items from the Super Smash Bros Series, descending order
+SELECT itemName
+FROM Items AS A
+WHERE A.gsID = 11
+ORDER BY itemID DESC;
+
+-- 3 - Counting the amount of games released after 1990
+SELECT COUNT(gsName)
+FROM GameSeries
+WHERE gsDateOrigin > '1990-%-%';
+
+-- 4 - Selecting the pokemon with only 1 type
+SELECT pokePKMN
+FROM Pokeball
+WHERE pokePkmnType2 IS NULL;
+
+-- 5 -
+/*
+SELECT DISTINCT moveUpB, moveDownB
+FROM Moves, Character, (SELECT gsName FROM GameSeries WHERE gsDateOrigin < '1990-%-%') AS gs1990
+WHERE Moves.charID = Character.charID;
+SELECT gsID
+FROM GameSeries
+WHERE IN (SELECT gsName FROM GameSeries WHERE gsDateOrigin < '1990-%-%')
+*/
