@@ -227,11 +227,11 @@ ORDER BY pokeID ASC;
 
 SELECT gsDateOrigin 
 from GameSeries  as G, Character as C
-WHERE G.GameSeries= C.GameSeries AND C.charName='Mario';
+WHERE G.gsID= C.gsID AND C.charName='Mario';
 
 --8 -- Select all the maps available with a Platform stage hazard
 
-SELECT stageName, stageID
+SELECT stageID, stageName
 FROM Stages as S
 WHERE S.stageHazard='PLATFORMS';
 
@@ -246,17 +246,19 @@ WHERE G.GameSeries= C.GameSeries AND S.stageGameSeries=C.GameSeries AND C.charNa
 
 Select stageName
 FROM STAGES as S
-WHERE stageMove=true;
+WHERE stageMove='YES';
 
 --11-- Select all the items Associated with a given Game Series 
 
-SELECT itemName
+SELECT DISTINCT itemName
 FROM Items I, Character as C
-Where I.charGameSeries = C.charGameSeries 
-ORDER BY C.charGameSeries;
+Where I.gsID = C.gsID 
+ORDER BY C.gsID;
 
 --12-- Example of Update a certain Pokemon's name based on ID
 
 UPDATE POKEBALL
 SET pokePKMN='Pikachu'
 WHERE pokeID=9;
+
+-- 13 - Deleting all characters from a certain GameSeries
