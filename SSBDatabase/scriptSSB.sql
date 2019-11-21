@@ -302,3 +302,11 @@ FROM Stages AS s, GameSeries AS gs
 WHERE stageViable = 'VIABLE'
     AND s.gsID = gs.gsID;
 
+-- 20 - Counting how many characters have only 4 colors
+SELECT COUNT(charName)
+FROM (SELECT charName
+	FROM Character as c, ColorScheme as cs
+	WHERE c.charID = cs.charID
+		AND color5 IS NULL
+		AND color6 IS NULL); 
+
