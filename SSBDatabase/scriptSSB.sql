@@ -206,15 +206,13 @@ SELECT pokePKMN
 FROM Pokeball
 WHERE pokePkmnType2 IS NULL;
 
--- 5 -
-/*
-SELECT DISTINCT moveUpB, moveDownB
-FROM Moves, Character, (SELECT gsName FROM GameSeries WHERE gsDateOrigin < '1990-%-%') AS gs1990
-WHERE Moves.charID = Character.charID;
-SELECT gsID
-FROM GameSeries
-WHERE IN (SELECT gsName FROM GameSeries WHERE gsDateOrigin < '1990-%-%')
-*/
+-- 5 - Getting all the items from game series released after 1990, in descending order
+SELECT itemID, itemName
+FROM Items, (SELECT gsID as lessThan1990
+            FROM GameSeries
+            WHERE gsDateOrigin < '1990-%-%')
+WHERE Items.gsID = lessThan1990
+ORDER BY itemID DESC;
 
 --6-- Grab the IDs of all rock type pokemon from the region kanto in Ascending Order
 
@@ -277,4 +275,30 @@ WHERE gsDateOrigin < '1990-%-%'
     AND c.charID = m.charID
     AND c.gsID = g.gsID;
 
---
+-- 16 - Getting the characters with the max amount of colors
+SELECT charName
+FROM Character as c, ColorScheme as cs
+WHERE c.charID = cs.charID
+	AND color5 IS NULL
+	AND color6 IS NULL
+
+-- 17 - Counting how many characters have 5 colors
+SELECT COUNT(charName)
+FROM (SELECT DISTINCT charName
+    FROM Character AS c, ColorScheme AS cs
+    WHERE c.charID = cs.charID
+        AND color5 IS NULL);
+
+-- 18 - Getting all the characters from the series that has the stage with a tornado hazard
+SELECT charName, moveB, moveUpB, moveDownB
+FROM Character AS c, Moves AS m, Stages AS s
+WHERE c.charID = m. charID
+    AND c.gsID = s.gsID
+    AND s.stageHazard LIKE '%TORNADO%';
+    
+-- 19 - Getting all viable stages with the series name
+SELECT DISTINCT stageName, stageViable, gsName
+FROM Stages AS s, GameSeries AS gs
+WHERE stageViable = 'VIABLE'
+    AND s.gsID = gs.gsID;
+
